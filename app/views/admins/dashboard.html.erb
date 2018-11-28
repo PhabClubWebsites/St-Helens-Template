@@ -101,7 +101,11 @@
             <p class="dashboard-p">Add/Update banners and your club logo for your website</p>
         </div>
         <div class="col-md-8 col-sm-8 col-xs-12">
-            <p style="float: right;"><%= link_to "Update banners", website_banners_path(club_id: club.id), class:"btn btn-md btn-phab" %></p>
+            <% if !club.blank? %>
+                <p style="float: right;"><%= link_to "Update banners", website_banners_path(club_id: club.id), class:"btn btn-md btn-phab" %></p>
+            <% else %>
+                <p style="float: right;"><%= link_to "Update banners",new_club_path, class:"btn btn-md btn-phab" %></p>
+            <% end %>
         </div>
     </div>
     <hr></hr>
