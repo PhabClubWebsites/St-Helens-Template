@@ -55,10 +55,10 @@ module ApplicationHelper
     end
     
     def news_header
-       return "News & Information" 
+       return "Latest News" 
     end
     
     def events_header
-       return "Activity Schedule" 
+       return "What's On" 
     end
 end
