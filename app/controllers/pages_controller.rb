@@ -82,6 +82,9 @@ class PagesController < ApplicationController
   def show
     @next_article = Page.where("site_page = ? AND id > ? AND published = ?", @page.site_page, @page.id, true).first
     @prev_article = Page.where("site_page = ? AND id < ? AND published = ?", @page.site_page, @page.id, true).last
+    set_meta_tags title: "#{@page.title} - #{Club.first.club_name}",
+              description: @page.content_one.truncate(120, separator: ' '),
+              keywords: @page.extract_keywords
   end
   
   def event_list
@@ -166,6 +169,9 @@ class PagesController < ApplicationController
      @about_us_preview = Page.all.where("site_page = ?", "about")
      @volunteers = Page.all.where("site_page = ? AND published = ?", "volunteer", true)
      @volunteers_preview = Page.all.where("site_page = ?", "volunteer")
+     set_meta_tags title: "About Us - #{Club.first.club_name}",
+              description: @about_us.first.content_one.truncate(180, separator: ' '),
+              keywords: @about_us.first.extract_keywords
   end
   
   def about_list
@@ -178,11 +184,17 @@ class PagesController < ApplicationController
   
   def news
      @news_pages = Page.where("site_page = ? AND published = ?", "news", true).paginate(:page => params[:page], :per_page => 5).order('id DESC')
+     set_meta_tags title: "Latest News - #{Club.first.club_name}",
+              description: "#{Club.first.club_name}'s latest news and articles. See what we've been up to this year!",
+              keywords: Club.first.club_name.split(" ").concat(["news, latest, articles, events, parties, charity"])
   end
   
   def events
     @event_pages = Page.where("site_page = ? AND published = ? AND date_of_event >= ?", "event", true, Date.today).paginate(:page => params[:page], :per_page => 5).order(date_of_event: :asc)
     @old_event_pages = Page.where("site_page = ? AND published = ? AND date_of_event < ?", "event", true, Date.today).paginate(:page => params[:page], :per_page => 3).order(date_of_event: :asc)
+    set_meta_tags title: "What's On - #{Club.first.club_name}",
+              description: "#{Club.first.club_name}'s upcoming events and parties. See what we've got planned for #{Time.current.year}!",
+              keywords: Club.first.club_name.split(" ").concat(["news, latest, articles, events, parties, charity"])
   end
   
   def contact_us
