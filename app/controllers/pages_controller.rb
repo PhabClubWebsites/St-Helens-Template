@@ -162,6 +162,9 @@ class PagesController < ApplicationController
     @home_pages = Page.where("site_page = ? AND published = ?", "home", true).order(id: :asc)
     @all_home_pages = Page.where("site_page = ?", "home").order(id: :asc)
     @contact = Contact.new
+    set_meta_tags title: "Home - #{Club.first.club_name}",
+              description: @home_pages.first.content_one.truncate(180, separator: ' '),
+              keywords: @home_pages.first.extract_keywords
   end
   
   def about_us
@@ -199,6 +202,9 @@ class PagesController < ApplicationController
   
   def contact_us
     @contact = Contact.new
+    set_meta_tags title: "Contact Us - #{Club.first.club_name}",
+              description: "#{Club.first.club_name}'s club and contact information. Here's where to find us and when we meet!",
+              keywords: Club.first.club_name.split(" ").concat(Club.first.split_address)
   end
   
   private
