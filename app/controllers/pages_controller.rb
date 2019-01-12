@@ -82,9 +82,11 @@ class PagesController < ApplicationController
   def show
     @next_article = Page.where("site_page = ? AND id > ? AND published = ?", @page.site_page, @page.id, true).first
     @prev_article = Page.where("site_page = ? AND id < ? AND published = ?", @page.site_page, @page.id, true).last
-    set_meta_tags title: "#{@page.title} - #{Club.first.club_name}",
-              description: @page.content_one.truncate(120, separator: ' '),
-              keywords: @page.extract_keywords
+    if !@page.content_one.blank?
+      set_meta_tags title: "#{@page.title} - #{Club.first.club_name}",
+                description: @page.content_one.truncate(120, separator: ' '),
+                keywords: @page.extract_keywords
+    end
   end
   
   def event_list
@@ -162,9 +164,11 @@ class PagesController < ApplicationController
     @home_pages = Page.where("site_page = ? AND published = ?", "home", true).order(id: :asc)
     @all_home_pages = Page.where("site_page = ?", "home").order(id: :asc)
     @contact = Contact.new
-    set_meta_tags title: "Home - #{Club.first.club_name}",
-              description: @home_pages.first.content_one.truncate(180, separator: ' '),
-              keywords: @home_pages.first.extract_keywords
+    if !@home_pages.blank?
+      set_meta_tags title: "Home - #{Club.first.club_name}",
+                description: @home_pages.first.content_one.truncate(180, separator: ' '),
+                keywords: @home_pages.first.extract_keywords
+    end
   end
   
   def about_us
@@ -172,9 +176,11 @@ class PagesController < ApplicationController
      @about_us_preview = Page.all.where("site_page = ?", "about")
      @volunteers = Page.all.where("site_page = ? AND published = ?", "volunteer", true)
      @volunteers_preview = Page.all.where("site_page = ?", "volunteer")
-     set_meta_tags title: "About Us - #{Club.first.club_name}",
-              description: @about_us.first.content_one.truncate(180, separator: ' '),
-              keywords: @about_us.first.extract_keywords
+     if !@about_us.blank?
+       set_meta_tags title: "About Us - #{Club.first.club_name}",
+                description: @about_us.first.content_one.truncate(180, separator: ' '),
+                keywords: @about_us.first.extract_keywords
+     end
   end
   
   def about_list
