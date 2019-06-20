@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   
   get 'website/banners', to: 'clubs#website_banners'
   
+  delete "delete_admin", to: "admins#delete_admin"
+  
   resources :pages do
     member do
   		get :published
