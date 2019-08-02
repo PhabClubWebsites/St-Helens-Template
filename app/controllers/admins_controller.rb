@@ -31,7 +31,7 @@ class AdminsController < ApplicationController
   private
   
   def is_super_admin
-    is_super = current_admin.email === "bob@example.com"
+    is_super = current_admin.email === "george.whittingham@phab.org.uk"
     if !is_super
       flash[:danger] = "You do not have permission to perform this action."
       redirect_to root_path
